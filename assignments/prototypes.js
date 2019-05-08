@@ -145,27 +145,31 @@ Humanoid.prototype.greet = function() {
     Humanoid.call(this, {createdAt, name, dimensions, healthPoints, team, weapons, language});
   } 
 
-  Villain.prototype.evilAttack = function() {
-    return `Take that SuperHero, EvilAttach 💀💥‼️`
-  }
+  Villain.prototype.evilAttack = function(victim) {
+    victim.healthPoints = victim.healthPoints - 10;
+    return `Take that SuperHero, EvilAttach 💀💥‼️ Hero loses ${victim.healthPoints}`;
+  };
 
-  Villain.prototype.ghostSlash = function() {
-    return `Take that SuperHero, GhostSlash💫👻‼️`
+  Villain.prototype.ghostSlash = function(victim) {
+    victim.healthPoints = victim.healthPoints - 5;
+    return `Take that SuperHero, GhostSlash💫👻‼️ Hero loses ${victim.healthPoints}`
   }
 
   function Hero({createdAt, name, dimensions, healthPoints, team, weapons, language}) {
     Humanoid.call(this, {createdAt, name, dimensions, healthPoints, team, weapons, language});
   }
 
-  Hero.prototype.justiceAttack = function() {
-    return `Take that Villain, justiceAttack 💪🏽👺🤜🏽🔥‼️`
+  Hero.prototype.justiceAttack = function(victim) {
+    victim.healthPoints = victim.healthPoints - 15;
+    return `Take that Villain, justiceAttack 💪🏽👺🤜🏽🔥‼️ Villain loses ${victim.healthPoints}`
   }
 
-  Hero.prototype.laserGaze = function() {
-    return `Take that Villain, Laser Gaze ✨🤩✨‼️`
+  Hero.prototype.laserGaze = function(victim) {
+    victim.healthPoints = victim.healthPoints - 3;
+    return `Take that Villain, Laser Gaze ✨🤩✨‼️ Villain loses ${victim.healthPoints}`
   }
 
-  const hero = new Humanoid({
+  const hero = new Hero({
     createdAt: new Date(),
     dimensions: {
       length: 2,
@@ -182,7 +186,7 @@ Humanoid.prototype.greet = function() {
     language: 'Common Tongue',
   });
 
-  const villain = new Humanoid({
+  const villain = new Villain({
     createdAt: new Date(),
     dimensions: {
       length: 2,
@@ -198,3 +202,8 @@ Humanoid.prototype.greet = function() {
     ],
     language: 'Evil Tounge',
   });
+
+  console.log(villain.evilAttack(hero));
+  console.log(villain.ghostSlash(hero));
+  console.log(hero.justiceAttack(villain));
+  console.log(hero.laserGaze(villain));
