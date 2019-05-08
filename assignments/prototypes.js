@@ -138,6 +138,63 @@ Humanoid.prototype.greet = function() {
 
 
   // Stretch task: 
-  // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
+  // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function. 
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+  function Villain({createdAt, name, dimensions, healthPoints, team, weapons, language}) {
+    Humanoid.call(this, {createdAt, name, dimensions, healthPoints, team, weapons, language});
+  } 
+
+  Villain.prototype.evilAttack = function() {
+    return `Take that SuperHero, EvilAttach 💀💥‼️`
+  }
+
+  Villain.prototype.ghostSlash = function() {
+    return `Take that SuperHero, GhostSlash💫👻‼️`
+  }
+
+  function Hero({createdAt, name, dimensions, healthPoints, team, weapons, language}) {
+    Humanoid.call(this, {createdAt, name, dimensions, healthPoints, team, weapons, language});
+  }
+
+  Hero.prototype.justiceAttack = function() {
+    return `Take that Villain, justiceAttack 💪🏽👺🤜🏽🔥‼️`
+  }
+
+  Hero.prototype.laserGaze = function() {
+    return `Take that Villain, Laser Gaze ✨🤩✨‼️`
+  }
+
+  const hero = new Humanoid({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 2,
+      height: 3,
+    },
+    healthPoints: 20,
+    name: 'Karma',
+    team: 'Justice League',
+    weapons: [
+      'Laser Gaze',
+      'Guntastic',
+    ],
+    language: 'Common Tongue',
+  });
+
+  const villain = new Humanoid({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 2,
+      height: 4,
+    },
+    healthPoints: 25,
+    name: 'Captain Mad',
+    team: '',
+    weapons: [
+      'Giant Claw',
+      'Spirit Katana',
+    ],
+    language: 'Evil Tounge',
+  });
