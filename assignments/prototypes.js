@@ -15,6 +15,15 @@
   * dimensions (These represent the character's size in the video game)
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
+function GameObject({createdAt, name, dimensions}) {
+  this.createdAt = createdAt;
+  this.name = name;
+  this.dimensions = dimensions;
+}
+
+GameObject.prototype.destroy = function() {
+  return `${this.name} was removed from the game.`;
+}
 
 /*
   === CharacterStats ===
@@ -22,6 +31,17 @@
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
+function CharacterStats({createdAt, name, dimensions, healthPoints}) {
+  GameObject.call(this, {createdAt, name, dimensions});
+  this.healthPoints = healthPoints;
+}
+CharacterStats.prototype = Object.create(GameObject.prototype);
+
+CharacterStats.prototype.takeDamage = function() {
+  return `${this.name} took damage.`;
+}
+
+
 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
@@ -32,6 +52,19 @@
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
+function Humanoid({createdAt, name, dimensions, healthPoints, team, weapons, language}) {
+  CharacterStats.call(this, {createdAt, name, dimensions, healthPoints});
+  this.team = team;
+  this.weapons = weapons;
+  this.language = language;
+}
+
+Humanoid.prototype = Object.create(CharacterStats.prototype); 
+
+Humanoid.prototype.greet = function() {
+  return `${this.name} offers a greeting in ${this.language}.`;
+}
+
  
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
@@ -41,7 +74,7 @@
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
+
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -102,9 +135,75 @@
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
+
 
   // Stretch task: 
-  // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
+  // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function. 
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+  function Villain({createdAt, name, dimensions, healthPoints, team, weapons, language}) {
+    Humanoid.call(this, {createdAt, name, dimensions, healthPoints, team, weapons, language});
+  } 
+
+  Villain.prototype.evilAttack = function(victim) {
+    victim.healthPoints = victim.healthPoints - 10;
+    return `Take that SuperHero, EvilAttach 💀💥‼️ Hero loses ${victim.healthPoints}`;
+  };
+
+  Villain.prototype.ghostSlash = function(victim) {
+    victim.healthPoints = victim.healthPoints - 5;
+    return `Take that SuperHero, GhostSlash💫👻‼️ Hero loses ${victim.healthPoints}`
+  }
+
+  function Hero({createdAt, name, dimensions, healthPoints, team, weapons, language}) {
+    Humanoid.call(this, {createdAt, name, dimensions, healthPoints, team, weapons, language});
+  }
+
+  Hero.prototype.justiceAttack = function(victim) {
+    victim.healthPoints = victim.healthPoints - 15;
+    return `Take that Villain, justiceAttack 💪🏽👺🤜🏽🔥‼️ Villain loses ${victim.healthPoints}`
+  }
+
+  Hero.prototype.laserGaze = function(victim) {
+    victim.healthPoints = victim.healthPoints - 3;
+    return `Take that Villain, Laser Gaze ✨🤩✨‼️ Villain loses ${victim.healthPoints}`
+  }
+
+  const hero = new Hero({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 2,
+      height: 3,
+    },
+    healthPoints: 20,
+    name: 'Karma',
+    team: 'Justice League',
+    weapons: [
+      'Laser Gaze',
+      'Guntastic',
+    ],
+    language: 'Common Tongue',
+  });
+
+  const villain = new Villain({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 2,
+      height: 4,
+    },
+    healthPoints: 25,
+    name: 'Captain Mad',
+    team: '',
+    weapons: [
+      'Giant Claw',
+      'Spirit Katana',
+    ],
+    language: 'Evil Tounge',
+  });
+
+  console.log(villain.evilAttack(hero));
+  console.log(villain.ghostSlash(hero));
+  console.log(hero.justiceAttack(villain));
+  console.log(hero.laserGaze(villain));
